@@ -5,7 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import { fetchUsers } from "./features/users/usersSlice";
 
+store.dispatch(fetchUsers());
+// Normally in Redux, you dispatch actions inside React components using the useDispatch hook. But here, the dispatch happens before the app even renders — outside of any component.
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

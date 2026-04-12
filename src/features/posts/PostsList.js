@@ -1,28 +1,44 @@
-import { useSelector } from "react-redux";
-import { selectAllPosts } from "./postsSlice";
-import PostAuther from "./PostAuther";
-import TimeAgo from "./TimeAgo";
-import ReactionButtons from "./ReactionButtons";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectAllPosts,
+  getPostsError,
+  getPostsStatus,
+  fetchPosts,
+} from "./postsSlice";
+import PostsExcerpt from "./PostsExcerpt";
+import { useEffect } from "react";
 const PostsList = () => {
+  const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts); //in case if the shape of the state changes, we only need to change the selector function and not all the components that use it.
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date)); //slice makes copy
-  const renderedPosts = orderedPosts.map((post) => (
-    <article key={post.id}>
-      <h3>{post.title}</h3>
-      <p>{post.content?.substring(0, 100) || ""}...</p>
-      <p className="postCredit">
-        <PostAuther userId={post.userId} />
-        <TimeAgo timestamp={post.date} />
-      </p>
-      <ReactionButtons post={post} />
-    </article>
-  ));
+  const postsStatus = useSelector(getPostsStatus);
+  const postsError = useSelector(getPostsError);
+
+  useEffect(() => {
+    if (postsStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [postsStatus, dispatch]);
+
+  let content;
+
+  if (postsStatus === "loading") {
+    content = <p>Loading</p>;
+  } else if (postsStatus === "succeeded") {
+    const orderedPosts = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
+
+    content = orderedPosts.map((post) => (
+      <PostsExcerpt key={post.id} post={post} />
+    ));
+  } else if (postsStatus === "failed") {
+    content = <p>{postsError}</p>;
+  }
+
   return (
     <div>
       <h2>Posts</h2>
-      {renderedPosts}
+      {content}
     </div>
   );
 };
