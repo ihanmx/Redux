@@ -25,5 +25,8 @@ const usersSlice = createSlice({
 // It takes the entire state object as input
 // Returns state.users — the users slice from the store
 export const selectAllUsers = (state) => state.users;
+export const selectUserById = (state, userId) => {
+  return state.users.find((user) => user.id === userId);
+};
 export { fetchUsers };
 export default usersSlice.reducer;
