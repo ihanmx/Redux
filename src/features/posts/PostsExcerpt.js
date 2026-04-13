@@ -2,6 +2,7 @@ import TimeAgo from "./TimeAgo";
 import PostAuther from "./PostAuther";
 import ReactionButtons from "./ReactionButtons";
 import { Link } from "react-router-dom";
+
 const PostsExcerpt = ({ post }) => {
   return (
     <article>
