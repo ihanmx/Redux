@@ -1,7 +1,6 @@
 import {
   createSelector,
   createEntityAdapter,
-  isFulfilled,
 } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import { apiSlice } from "../api/apiSlice";

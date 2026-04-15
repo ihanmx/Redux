@@ -1,14 +1,14 @@
-import { useSelector, useDispatch } from "react-redux";
-import { selectAllPosts, fetchPosts } from "./postsSlice";
+import { useSelector } from "react-redux";
+import { selectAllPosts } from "./postsSlice";
 import PostsExcerpt from "./PostsExcerpt";
-import { useEffect } from "react";
 import { useGetPostsQuery } from "./postsSlice";
 
 const PostsList = () => {
+  // Triggers the fetch + gives loading states
   const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
-  const dispatch = useDispatch();
-  const posts = useSelector(selectAllPosts); //in case if the shape of the state changes, we only need to change the selector function and not all the components that use it.
 
+  // Reads the result as a clean, sorted array via the memoized selector
+  const posts = useSelector(selectAllPosts);
   // useEffect(() => {
   //   if (postsStatus === "idle") {
   //     dispatch(fetchPosts());

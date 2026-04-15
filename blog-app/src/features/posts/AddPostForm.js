@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import { selectAllUsers } from "../users/usersSlice";
+import { selectAllUsers, useGetUsersQuery } from "../users/usersSlice";
 import { useAddNewPostMutation } from "./postsSlice";
 
 const AddPostForm = () => {
@@ -12,6 +12,7 @@ const AddPostForm = () => {
 
   const [addNewPost, { isLoading }] = useAddNewPostMutation(); //destructure
 
+  useGetUsersQuery();
   const users = useSelector(selectAllUsers);
 
   const onTitleChanged = (e) => {

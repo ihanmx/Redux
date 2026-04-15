@@ -2,6 +2,7 @@ import { useState } from "react";
 import {  useSelector } from "react-redux";
 import {
   selectPostById,
+  useGetPostsQuery,
   useUpdatePostMutation,
   useDeletePostMutation,
 } from "./postsSlice";
@@ -12,6 +13,8 @@ import { selectAllUsers } from "../users/usersSlice";
 const EditPostForm = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
+
+  const { isLoading: isPostsLoading } = useGetPostsQuery();
 
   const post = useSelector((state) => {
     return selectPostById(state, Number(postId));
@@ -24,6 +27,10 @@ const EditPostForm = () => {
   const [userId, setUserId] = useState(post?.userId);
   const [updatePost, { isLoading }] = useUpdatePostMutation();
   const [deletePost] = useDeletePostMutation();
+  if (isPostsLoading) {
+    return <section>Loading...</section>;
+  }
+
   if (!post) {
     return <section>Post not found !</section>;
   }

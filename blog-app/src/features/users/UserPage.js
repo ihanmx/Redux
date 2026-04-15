@@ -1,7 +1,7 @@
-import { selectUserById } from "./usersSlice";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useGetPostsByUserIdQuery } from "../posts/postsSlice";
+import { selectUserById } from "../users/usersSlice";
 
 const UserPage = () => {
   const { userId } = useParams();
@@ -11,9 +11,10 @@ const UserPage = () => {
     isLoading,
     isSuccess,
     error,
-  } = useGetPostsByUserIdQuery();
-  const user = useSelector((state) => selectUserById(state, Number(userId)));
-
+  } = useGetPostsByUserIdQuery(userId);
+  const user = useSelector((state) => selectUserById(state, Number(userId))); //no need for selector it is single data
+  // Build useSelector + dedicated selectors when multiple components share the same cache → avoids re-deriving the same data in each component
+  // Use data directly from the hook when only one component reads this specific cache entry
   let content;
   if (isLoading) {
     content = <p>Loading...</p>;

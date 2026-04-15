@@ -5,12 +5,12 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-import { fetchUsers } from "./features/users/usersSlice";
-import { extendedApiSlice } from "./features/posts/postsSlice";
+import { extendedApiSlice as postsApiSlice } from "./features/posts/postsSlice";
+import { extendedApiSlice as usersApiSlice } from "./features/users/usersSlice";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// It manually triggers the getPosts fetch the moment the app loads
-store.dispatch(extendedApiSlice.endpoints.getPosts.initiate());
-store.dispatch(fetchUsers());
+// It manually triggers the getPosts and getUsers fetches the moment the app loads
+store.dispatch(postsApiSlice.endpoints.getPosts.initiate());
+store.dispatch(usersApiSlice.endpoints.getUsers.initiate());
 // Normally in Redux, you dispatch actions inside React components using the useDispatch hook. But here, the dispatch happens before the app even renders — outside of any component.
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
